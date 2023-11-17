@@ -1,13 +1,15 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { UserComponent } from "./user.component"
 import { UserService } from "./user.service";
 import { DebugElement } from "@angular/core";
 import { By } from "@angular/platform-browser";
+import { DataService } from "../data/data.service";
 
 describe("user component", () => {
     let component: UserComponent;
     let fixture: ComponentFixture<UserComponent>
     let userService: UserService;
+    let dataService: DataService;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
@@ -16,6 +18,7 @@ describe("user component", () => {
 
         fixture = TestBed.createComponent(UserComponent);
         userService = TestBed.inject(UserService);
+        dataService = TestBed.inject(DataService);
         component = fixture.componentInstance;
     });
 
@@ -73,4 +76,15 @@ describe("user component", () => {
         //assert
         expect(userMessage.innerText).toContain(name);
     });
+
+    it("should set the data equal to 'Data' when the component calls getDetails()", waitForAsync(() => {
+        //arrange
+        const expected: string = "Data";
+
+        //assert
+        fixture.whenStable()
+            .then(() => {
+                expect(component.data).toEqual(expected);
+            })
+    }));
 });
